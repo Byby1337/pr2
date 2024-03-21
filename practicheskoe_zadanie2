@@ -1,0 +1,40 @@
+import math
+
+
+def distance(point1, point2):
+    return math.sqrt((point2[0] - point1[0]) ** 2 + (point2[1] - point1[1]) ** 2)
+
+def nearest_neighbors(point,points,radius):
+    neighbors = []
+    for p in points:
+        if distance(point,p) <= radius:
+            neighbors.append(p)
+    return neighbors
+
+mass_point = {}
+
+while True:
+    x = float(input("Введите координаты точки по значению x: "))
+    y = float(input("Введите координаты точки по значению y: "))
+    point_class = input("Введите класс объекта: ")
+
+    if point_class in mass_point:
+        mass_point[point_class].append((x,y))
+    else:
+        mass_point[point_class] = [(x,y)]
+
+    choice = input("Хотите ли Вы еще добавить точку? Если «да», то введите «y», если нет, то нажмите любую другую клавишу: ")
+    if choice.lower() != 'y':
+        break
+
+x = float(input("Введите координаты точки неизвестного класса по значению x: "))
+y = float(input("Введите координаты точки неизвестного класса по значению y: "))
+
+unknown_point = (x,y)
+radius = float(input("Задайте величину радиуса ближайших соседей: "))
+nearest_points = nearest_neighbors(unknown_point, [point for points in mass_point.values() for point in points], radius)
+
+print("Ближайшие соседи:")
+for point in nearest_points:
+    print(point)
+
